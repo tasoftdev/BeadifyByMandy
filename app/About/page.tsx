@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function About() {
   return (
-    <section className="about-preview">
+    <section id="about" className="about-preview">
       <div className="about-image">
         <div className="about-placeholder">
           BeadifyByMandy

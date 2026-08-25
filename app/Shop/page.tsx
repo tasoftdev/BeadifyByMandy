@@ -1,4 +1,17 @@
+"use client";
+
 import Link from "next/link";
+import { useEffect, useState } from "react";
+
+type Product = {
+  id: number;
+  name: string;
+  price: number;
+};
+
+type CartItem = Product & {
+  quantity: number;
+};
 
 const CATEGORIES = [
   {
@@ -22,55 +35,109 @@ const CATEGORIES = [
     description: "Simple details that make a statement",
   },
   {
-  id: "rings",
-  title: "Beaded Rings",
-  description: "Delicate pieces to complete your style",
-},
-{
-  id: "phone-charms",
-  title: "Phone Charms",
-  description: "Cute handmade charms for your everyday essentials",
-},
+    id: "rings",
+    title: "Beaded Rings",
+    description: "Delicate pieces to complete your style",
+  },
+  {
+    id: "phone-charms",
+    title: "Phone Charms",
+    description: "Cute handmade charms for your everyday essentials",
+  },
 ];
 
-const FEATURED_PRODUCTS = [
+const FEATURED_PRODUCTS: Product[] = [
   {
     id: 1,
     name: "Pearl Bracelet",
-    price: "₦8,000",
+    price: 8000,
   },
   {
     id: 2,
     name: "Beaded Necklace",
-    price: "₦12,000",
+    price: 12000,
   },
   {
     id: 3,
     name: "Waist Beads",
-    price: "₦5,000",
+    price: 5000,
   },
   {
     id: 4,
     name: "Crystal Anklet",
-    price: "₦6,500",
+    price: 6500,
   },
   {
-  id: 5,
-  name: "Beaded Ring",
-  price: "₦4,500",
-},
-{
-  id: 6,
-  name: "Phone Charm",
-  price: "₦3,500",
-},
-
+    id: 5,
+    name: "Beaded Ring",
+    price: 4500,
+  },
+  {
+    id: 6,
+    name: "Phone Charm",
+    price: 3500,
+  },
 ];
 
 export default function Shop() {
+  const [cart, setCart] = useState<CartItem[]>([]);
+
+  useEffect(() => {
+    const savedCart = localStorage.getItem("beadify-cart");
+
+    if (savedCart) {
+      try {
+        setCart(JSON.parse(savedCart));
+      } catch {
+        localStorage.removeItem("beadify-cart");
+      }
+    }
+  }, []);
+
+  const addToCart = (product: Product) => {
+    setCart((currentCart) => {
+      const existingProduct = currentCart.find(
+        (item) => item.id === product.id
+      );
+
+      let updatedCart: CartItem[];
+
+      if (existingProduct) {
+        updatedCart = currentCart.map((item) =>
+          item.id === product.id
+            ? {
+                ...item,
+                quantity: item.quantity + 1,
+              }
+            : item
+        );
+      } else {
+        updatedCart = [
+          ...currentCart,
+          {
+            ...product,
+            quantity: 1,
+          },
+        ];
+      }
+
+      localStorage.setItem(
+        "beadify-cart",
+        JSON.stringify(updatedCart)
+      );
+
+      return updatedCart;
+    });
+  };
+
+  const cartCount = cart.reduce(
+    (total, item) => total + item.quantity,
+    0
+  );
+
   return (
     <main className="shop-page">
-      <section className="featured-show">
+      <section id="shop" className="featured-show">
         <div className="featured-products-content">
           <p className="section-label">OUR FAVORITES</p>
 
@@ -90,15 +157,38 @@ export default function Shop() {
 
               <div className="product-info">
                 <h3>{product.name}</h3>
-                <p className="price">{product.price}</p>
+
+                <p className="price">
+                  ₦{product.price.toLocaleString()}
+                </p>
+
+                <button
+                  type="button"
+                  className="cart-add-button"
+                  onClick={() => addToCart(product)}
+                >
+                  Add to Cart
+                </button>
               </div>
             </div>
           ))}
         </div>
 
-        <Link href="/shop" className="featured-button">
-          View Collection
-        </Link>
+        <div className="featured-actions">
+          <Link
+            href="/collection"
+            className="featured-button"
+          >
+            View Collection
+          </Link>
+
+          <Link
+            href="/cart"
+            className="cart-link-button"
+          >
+            View Cart {cartCount > 0 && `(${cartCount})`}
+          </Link>
+        </div>
       </section>
 
       <section className="shop-hero">
@@ -114,6 +204,7 @@ export default function Shop() {
       <section className="categories">
         <div className="categories-header">
           <h2>Shop By Category</h2>
+
           <p>
             Explore our handmade bead collections and find
             something perfect for you.

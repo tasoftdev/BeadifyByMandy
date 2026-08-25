@@ -1,17 +1,17 @@
 "use client";
 import React, { useState } from "react";
-import Link from 'next/link';
-import Navbar from './Navbar/page';
-import About from './About/page';
-import Shop from './Shop/page';
-import Contact from './Contact/page';
+import Navbar from './navbar/page';
+import About from './about/page';
+import Shop from './shop/page';
+import Contact from './contact/page';
+import Link from "next/link";
 
 export default function Home() {
   return (
     <>
       <Navbar />
       <main className="home-page">
-        <section className="hero">
+        <section id="home" className="hero">
           <div className="hero-content">
             <p className="hero-small-text">WELCOME TO BEADIFYBYMANDY</p>
 
@@ -63,10 +63,10 @@ export default function Home() {
     >
       <h3>Quick Links</h3>
 
-      <Link href="/">Home</Link>
-      <Link href="/shop">Shop</Link>
-      <Link href="/about">About</Link>
-      <Link href="/contact">Contact</Link>
+      <a href="/">Home</a>
+      <a href="/Shop">Shop</a>
+      <a href="/About">About</a>
+      <a href="/Contact">Contact</a>
     </nav>
 
     <div className="footer-contact">
