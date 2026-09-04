@@ -1,162 +1,187 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useCart } from "../context/cartContext";
 
 type Product = {
   id: number;
   name: string;
   price: number;
+  image?: string;
+  category: string;
 };
 
-type CartItem = Product & {
-  quantity: number;
-};
-
-const CATEGORIES = [
-  {
-    id: "bracelets",
-    title: "Bracelets",
-    description: "Elegant pieces for everyday wear",
-  },
-  {
-    id: "necklaces",
-    title: "Necklaces",
-    description: "Beautiful beads to complete your looks",
-  },
-  {
-    id: "waist-beads",
-    title: "Waist Beads",
-    description: "Handmade pieces made for you",
-  },
-  {
-    id: "anklets",
-    title: "Anklets",
-    description: "Simple details that make a statement",
-  },
-  {
-    id: "rings",
-    title: "Beaded Rings",
-    description: "Delicate pieces to complete your style",
-  },
-  {
-    id: "phone-charms",
-    title: "Phone Charms",
-    description: "Cute handmade charms for your everyday essentials",
-  },
-];
-
-const FEATURED_PRODUCTS: Product[] = [
+const PRODUCTS: Product[] = [
   {
     id: 1,
     name: "Pearl Bracelet",
+    image: "/images/Products/pearl-bracelet.jpg",
     price: 8000,
+    category: "Bracelets",
   },
   {
     id: 2,
     name: "Beaded Necklace",
+    image: "/images/Products/beaded-necklace.jpg",
     price: 12000,
+    category: "Necklaces",
   },
   {
     id: 3,
     name: "Waist Beads",
+    image: "/images/Products/waist-beads.jpg",
     price: 5000,
+    category: "Waist Beads",
   },
   {
     id: 4,
     name: "Crystal Anklet",
+    image: "/images/Products/crystal-anklet.jpg",
     price: 6500,
+    category: "Anklets",
   },
   {
     id: 5,
     name: "Beaded Ring",
+    image: "/images/Products/beaded-ring.jpg",
     price: 4500,
+    category: "Beaded Rings",
   },
   {
     id: 6,
     name: "Phone Charm",
+    image: "/images/Products/phone-charm.jpg",
     price: 3500,
+    category: "Phone Charms",
   },
 ];
 
+const FILTER_CATEGORIES = [
+  "All",
+  "Bracelets",
+  "Necklaces",
+  "Waist Beads",
+  "Anklets",
+  "Beaded Rings",
+  "Phone Charms",
+];
+
 export default function Shop() {
-  const [cart, setCart] = useState<CartItem[]>([]);
+  const { addToCart } = useCart();
 
-  useEffect(() => {
-    const savedCart = localStorage.getItem("beadify-cart");
+  const [selectedCategory, setSelectedCategory] =
+    useState("All");
 
-    if (savedCart) {
-      try {
-        setCart(JSON.parse(savedCart));
-      } catch {
-        localStorage.removeItem("beadify-cart");
-      }
-    }
-  }, []);
+  const [addedProduct, setAddedProduct] = useState<
+    number | null
+  >(null);
 
-  const addToCart = (product: Product) => {
-    setCart((currentCart) => {
-      const existingProduct = currentCart.find(
-        (item) => item.id === product.id
-      );
-
-      let updatedCart: CartItem[];
-
-      if (existingProduct) {
-        updatedCart = currentCart.map((item) =>
-          item.id === product.id
-            ? {
-                ...item,
-                quantity: item.quantity + 1,
-              }
-            : item
+  const filteredProducts =
+    selectedCategory === "All"
+      ? PRODUCTS
+      : PRODUCTS.filter(
+          (product) =>
+            product.category === selectedCategory
         );
-      } else {
-        updatedCart = [
-          ...currentCart,
-          {
-            ...product,
-            quantity: 1,
-          },
-        ];
-      }
 
-      localStorage.setItem(
-        "beadify-cart",
-        JSON.stringify(updatedCart)
-      );
+  const handleAddToCart = (product: Product) => {
+    addToCart(product);
+    setAddedProduct(product.id);
 
-      return updatedCart;
-    });
+    setTimeout(() => {
+      setAddedProduct(null);
+    }, 1200);
   };
-
-  const cartCount = cart.reduce(
-    (total, item) => total + item.quantity,
-    0
-  );
 
   return (
     <main className="shop-page">
-      <section id="shop" className="featured-show">
-        <div className="featured-products-content">
-          <p className="section-label">OUR FAVORITES</p>
+      <section className="shop-hero">
+        <p className="section-label">
+          BEADIFYBYMANDY
+        </p>
 
-          <h2>Featured Collection</h2>
+        <h1>Shop Our Collection</h1>
 
-          <span>
-            Discover some of our most loved bead pieces.
-          </span>
+        <p>
+          Discover our complete collection of handmade
+          bead accessories.
+        </p>
+      </section>
+
+      <section className="shop-products" id="shop">
+        <div className="shop-products-header">
+          <div>
+            <p className="section-label">
+              OUR COLLECTION
+            </p>
+
+            <h2>All Products</h2>
+
+            <p>
+              Browse our handmade pieces and find something
+              beautiful for you.
+            </p>
+          </div>
+        </div>
+
+        <div className="category-filter">
+          {FILTER_CATEGORIES.map((category) => (
+            <button
+              key={category}
+              type="button"
+              className={`filter-button ${
+                selectedCategory === category
+                  ? "active"
+                  : ""
+              }`}
+              onClick={() =>
+                setSelectedCategory(category)
+              }
+            >
+              {category}
+            </button>
+          ))}
         </div>
 
         <div className="product-grid">
-          {FEATURED_PRODUCTS.map((product) => (
-            <div className="product-card" key={product.id}>
-              <div className="product-image">
-                Product Image
-              </div>
+          {filteredProducts.map((product) => (
+            <div
+              className="product-card"
+              key={product.id}
+            >
+              <Link
+                href={`/shop/product/${product.id}`}
+                className="product-image-link"
+              >
+                <div className="product-image">
+                  {product.image ? (
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="product-img"
+                    />
+                  ) : (
+                    <div className="product-image-placeholder">
+                      <span>BeadifyByMandy</span>
+                    </div>
+                  )}
+                </div>
+              </Link>
 
               <div className="product-info">
-                <h3>{product.name}</h3>
+                <p className="product-category">
+                  {product.category}
+                </p>
+
+                <Link
+                  href={`/shop/product/${product.id}`}
+                  className="product-name-link"
+                >
+                  <h3 className="product-name">
+                    {product.name}
+                  </h3>
+                </Link>
 
                 <p className="price">
                   ₦{product.price.toLocaleString()}
@@ -164,70 +189,34 @@ export default function Shop() {
 
                 <button
                   type="button"
-                  className="cart-add-button"
-                  onClick={() => addToCart(product)}
+                  className={`cart-add-button ${
+                    addedProduct === product.id
+                      ? "added"
+                      : ""
+                  }`}
+                  onClick={() =>
+                    handleAddToCart(product)
+                  }
                 >
-                  Add to Cart
+                  {addedProduct === product.id
+                    ? "Added to Cart ✓"
+                    : "Add to Cart"}
                 </button>
               </div>
             </div>
           ))}
         </div>
 
-        <div className="featured-actions">
-          <Link
-            href="/collection"
-            className="featured-button"
-          >
-            View Collection
-          </Link>
+        {filteredProducts.length === 0 && (
+          <div className="no-products">
+            <h3>No products found</h3>
 
-          <Link
-            href="/cart"
-            className="cart-link-button"
-          >
-            View Cart {cartCount > 0 && `(${cartCount})`}
-          </Link>
-        </div>
-      </section>
-
-      <section className="shop-hero">
-        <p className="section-label">BEADIFYBYMANDY</p>
-
-        <h1>Shop Our Collection</h1>
-
-        <p>
-          Find something beautiful for every occasion.
-        </p>
-      </section>
-
-      <section className="categories">
-        <div className="categories-header">
-          <h2>Shop By Category</h2>
-
-          <p>
-            Explore our handmade bead collections and find
-            something perfect for you.
-          </p>
-        </div>
-
-        <div className="category-grid">
-          {CATEGORIES.map((category) => (
-            <Link
-              href={`/shop/${category.id}`}
-              key={category.id}
-              className="category-card"
-            >
-              <div className="category-image">
-                <h2>{category.title}</h2>
-
-                <p>{category.description}</p>
-
-                <span>Explore Collection →</span>
-              </div>
-            </Link>
-          ))}
-        </div>
+            <p>
+              There are currently no products in this
+              category.
+            </p>
+          </div>
+        )}
       </section>
     </main>
   );

@@ -8,6 +8,7 @@ type Product = {
   name: string;
   price: number;
   category: string;
+  image: string;
 };
 
 type CartItem = Product & {
@@ -20,120 +21,140 @@ const PRODUCTS: Product[] = [
     name: "Pink Crystal Bracelet",
     price: 7500,
     category: "Bracelets",
+    image: "/images/category/products/pink-bracelet.jpg",
   },
   {
     id: 2,
     name: "Pearl Charm Bracelet",
     price: 8500,
     category: "Bracelets",
+    image: "/images/Bracelet.jpg",
   },
   {
     id: 3,
     name: "Golden Bead Bracelet",
     price: 9000,
     category: "Bracelets",
+    image: "/images/Bracelet.jpg",
   },
   {
     id: 4,
     name: "Pastel Dream Bracelet",
     price: 7000,
     category: "Bracelets",
+    image: "/images/Bracelet.jpg",
   },
   {
     id: 5,
     name: "Midnight Crystal Bracelet",
     price: 10000,
     category: "Bracelets",
+    image: "/images/Bracelet.jpg",
   },
   {
     id: 6,
     name: "Gold Beaded Necklace",
     price: 15000,
     category: "Necklaces",
+    image: "/images/beaded-necklace.jpg",
   },
   {
     id: 7,
     name: "Pearl Drop Necklace",
     price: 13500,
     category: "Necklaces",
+    image: "/images/beaded-necklace.jpg",
   },
   {
     id: 8,
     name: "Rose Crystal Necklace",
     price: 14000,
     category: "Necklaces",
+    image: "/images/beaded-necklace.jpg",
   },
   {
     id: 9,
     name: "Ocean Blue Necklace",
     price: 12500,
     category: "Necklaces",
+    image: "/images/beaded-necklace.jpg",
   },
   {
     id: 10,
     name: "Butterfly Charm Necklace",
     price: 16000,
     category: "Necklaces",
+    image: "/images/beaded-necklace.jpg",
   },
   {
     id: 11,
     name: "White Waist Beads",
     price: 6000,
     category: "Waist Beads",
+    image: "/images/waist-beads.jpg",
   },
   {
     id: 12,
     name: "Pink & Gold Waist Beads",
     price: 7500,
     category: "Waist Beads",
+    image: "/images/waist-beads.jpg",
   },
   {
     id: 13,
     name: "Crystal Waist Beads",
     price: 8000,
     category: "Waist Beads",
+    image: "/images/waist-beads.jpg",
   },
   {
     id: 14,
     name: "Sunset Waist Beads",
     price: 7000,
     category: "Waist Beads",
+    image: "/images/waist-beads.jpg",
   },
   {
     id: 15,
     name: "Pearl Anklet",
     price: 7000,
     category: "Anklets",
+    image: "/images/anklets.jpg",
   },
   {
     id: 16,
     name: "Crystal Chain Anklet",
     price: 8500,
     category: "Anklets",
+    image: "/images/anklets.jpg",
   },
   {
     id: 17,
     name: "Butterfly Anklet",
     price: 9000,
     category: "Anklets",
+    image: "/images/anklets.jpg",
   },
   {
     id: 18,
     name: "Beaded Jewelry Set",
     price: 20000,
     category: "Jewelry Sets",
+    image: "/images/jewelry-sets.jpg",
   },
   {
     id: 19,
     name: "Pearl Princess Set",
     price: 25000,
     category: "Jewelry Sets",
+    image: "/images/jewelry-sets.jpg",
   },
   {
     id: 20,
     name: "Midnight Glam Set",
     price: 22500,
     category: "Jewelry Sets",
+    image: "/images/jewelry-sets.jpg",
   },
 ];
 
@@ -235,7 +256,11 @@ export default function Collection() {
                     key={product.id}
                   >
                     <div className="product-image">
-                      <span>Product Image</span>
+                      <img
+                        src={product.image}
+                        alt={product.name}
+                        className="product-img"
+                      />
                     </div>
 
                     <div className="product-info">

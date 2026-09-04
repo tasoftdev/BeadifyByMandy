@@ -10,23 +10,28 @@ export default function About() {
       </div>
 
       <div className="about-content">
-        <span className="section-label">About BeadifyByMandy</span>
+        <span className="section-label">
+          ABOUT BEADIFYBYMANDY
+        </span>
 
         <h2 className="section-title">
-          Welcome to BeadifyByMandy!
+          Made With Love, Just For You.
         </h2>
 
         <p className="section-description">
-          At BeadifyByMandy, we create beautiful handmade bead designs
-          created to add a personal touch to every outfit and occasion.
+          Welcome to BeadifyByMandy, where creativity meets
+          craftsmanship. We create beautiful handmade bead
+          accessories designed to bring colour, elegance and
+          personality to your everyday style.
         </p>
 
         <p>
-          From everyday pieces to special occasions, every design is
-          carefully made with you in mind.
+          Every piece is carefully crafted with attention to
+          detail, from simple everyday designs to special
+          pieces made for memorable occasions.
         </p>
 
-        <Link href="/about" className="about-button">
+        <Link href="/about/more-info" className="about-button">
           Learn More
         </Link>
       </div>

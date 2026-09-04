@@ -5,14 +5,29 @@ import React, { useState } from "react";
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
     e.preventDefault();
 
     setSending(true);
+    setSubmitted(false);
+    setError("");
 
     const form = e.currentTarget;
     const formData = new FormData(form);
+
+    const name = formData.get("name")?.toString().trim();
+    const email = formData.get("email")?.toString().trim();
+    const message = formData.get("message")?.toString().trim();
+
+    if (!name || !email || !message) {
+      setError("Please fill in all required fields.");
+      setSending(false);
+      return;
+    }
 
     try {
       const response = await fetch(form.action, {
@@ -26,9 +41,15 @@ export default function Contact() {
       if (response.ok) {
         form.reset();
         setSubmitted(true);
+      } else {
+        setError(
+          "Something went wrong. Please try again."
+        );
       }
-    } catch (error) {
-      console.error("Error submitting form:", error);
+    } catch {
+      setError(
+        "Unable to send your message. Please check your connection and try again."
+      );
     } finally {
       setSending(false);
     }
@@ -38,6 +59,7 @@ export default function Contact() {
     <section id="contact" className="contact-content">
       <div className="contact-header">
         <h1>Get In Touch</h1>
+
         <p>
           Have a question or want to create something special?
           <br />
@@ -51,11 +73,14 @@ export default function Contact() {
 
           <div className="contact-item">
             <span className="contact-icon">📱</span>
+
             <div>
               <h3>WhatsApp</h3>
-              <p>+234 *** *** ****</p>
+
+              <p>+234 913 284 3090</p>
+
               <a
-                href="https://wa.me/2340000000000"
+                href="https://wa.me/2349132843090"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -66,8 +91,10 @@ export default function Contact() {
 
           <div className="contact-item">
             <span className="contact-icon">📸</span>
+
             <div>
               <h3>Instagram</h3>
+
               <a
                 href="https://instagram.com/beadifybymandy"
                 target="_blank"
@@ -80,8 +107,10 @@ export default function Contact() {
 
           <div className="contact-item">
             <span className="contact-icon">🎵</span>
+
             <div>
               <h3>TikTok</h3>
+
               <a
                 href="https://www.tiktok.com/@beadifybymandy"
                 target="_blank"
@@ -98,7 +127,14 @@ export default function Contact() {
 
           {submitted && (
             <p className="success-message">
-              Thank you for your message! We&apos;ll get back to you soon.
+              Thank you for your message! We&apos;ll get back
+              to you soon.
+            </p>
+          )}
+
+          {error && (
+            <p className="error-message">
+              {error}
             </p>
           )}
 
@@ -109,6 +145,7 @@ export default function Contact() {
           >
             <div className="form-group">
               <label htmlFor="name">Name</label>
+
               <input
                 id="name"
                 name="name"
@@ -120,6 +157,7 @@ export default function Contact() {
 
             <div className="form-group">
               <label htmlFor="email">Email</label>
+
               <input
                 id="email"
                 name="email"
@@ -130,18 +168,8 @@ export default function Contact() {
             </div>
 
             <div className="form-group">
-              <label htmlFor="subject">Subject</label>
-              <input
-                id="subject"
-                name="subject"
-                type="text"
-                placeholder="Subject"
-                required
-              />
-            </div>
-
-            <div className="form-group">
               <label htmlFor="message">Message</label>
+
               <textarea
                 id="message"
                 name="message"
@@ -152,7 +180,9 @@ export default function Contact() {
             </div>
 
             <button type="submit" disabled={sending}>
-              {sending ? "Sending..." : "Send Message"}
+              {sending
+                ? "Sending..."
+                : "Send Message"}
             </button>
           </form>
         </div>
