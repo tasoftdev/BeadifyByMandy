@@ -93,7 +93,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="featured-products">
+        <section id="shop" className="featured-products">
           <div className="section-heading">
             <p>OUR FAVOURITES</p>
             <h2>Featured Products</h2>
@@ -217,6 +217,47 @@ export default function Home() {
           </div>
         </div>
       </footer>
+
+      <style jsx>{`
+        @media (max-width: 600px) {
+          .hero-small-text {
+            font-size: 13px;
+          }
+
+          .hero-description {
+            font-size: 15px;
+            line-height: 1.6;
+          }
+
+          .section-heading > p {
+            font-size: 15px;
+            line-height: 1.6;
+          }
+
+          .product-info p {
+            font-size: 14px;
+          }
+
+          .product-info h3 {
+            font-size: 16px;
+          }
+
+          .product-info span {
+            font-size: 15px;
+          }
+
+          .category-info p {
+            font-size: 15px;
+            line-height: 1.5;
+          }
+
+          .section-button a {
+            padding: 10px 18px;
+            font-size: 14px;
+            white-space: nowrap;
+          }
+        }
+      `}</style>
     </>
   );
 }

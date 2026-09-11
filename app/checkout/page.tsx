@@ -20,15 +20,16 @@ export default function CheckoutPage() {
   });
 
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
 
   const deliveryFee = cartTotal > 0 ? 2500 : 0;
   const grandTotal = cartTotal + deliveryFee;
 
   useEffect(() => {
-    if (cart.length === 0) {
+    if (cart.length === 0 && !success) {
       router.replace("/shop");
     }
-  }, [cart.length, router]);
+  }, [cart.length, router, success]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -39,7 +40,7 @@ export default function CheckoutPage() {
     });
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
     if (
@@ -55,6 +56,7 @@ export default function CheckoutPage() {
     }
 
     setError("");
+    setSuccess(false);
 
     const orderReference = `#BMD-${Math.floor(
       10000 + Math.random() * 90000
@@ -79,17 +81,55 @@ export default function CheckoutPage() {
       total: grandTotal,
     };
 
-    sessionStorage.setItem(
-      "beadify-last-order",
-      JSON.stringify(order)
-    );
+    try {
+      const response = await fetch("/api/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(order),
+      });
 
-    clearCart();
+      const responseText = await response.text();
 
-    router.push("/confirmation");
+      let data: { error?: string; success?: boolean };
+
+      try {
+        data = JSON.parse(responseText);
+      } catch {
+        console.error("API returned:", responseText);
+
+        throw new Error(
+          "The order server returned an invalid response."
+        );
+      }
+
+      if (!response.ok) {
+        throw new Error(
+          data.error || "Unable to place your order."
+        );
+      }
+
+      setSuccess(true);
+
+      sessionStorage.setItem(
+        "beadify-last-order",
+        JSON.stringify(order)
+      );
+
+      clearCart();
+    } catch (error) {
+      console.error("Order submission error:", error);
+
+      setError(
+        error instanceof Error
+          ? error.message
+          : "We could not place your order right now. Please try again."
+      );
+    }
   };
 
-  if (cart.length === 0) {
+  if (cart.length === 0 && !success) {
     return null;
   }
 
@@ -320,6 +360,46 @@ export default function CheckoutPage() {
           </Link>
         </aside>
       </div>
+
+      {success && (
+        <div className="checkout-success-overlay">
+          <div className="checkout-success-popup">
+            <div className="checkout-success-icon">
+              ✓
+            </div>
+
+            <h2>Order placed successfully! 🎉</h2>
+
+            <p>
+              Thank you for your order. We’ll contact you shortly
+              to confirm your order and payment.
+            </p>
+
+            <div className="whatsapp-hint">
+              <p>
+                Need help with your order? Chat with us on WhatsApp.
+              </p>
+
+              <a
+                href="https://wa.me/2349163865424"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="whatsapp-button"
+              >
+                Chat on WhatsApp
+              </a>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setSuccess(false)}
+              className="checkout-success-button"
+            >
+              Continue
+            </button>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
