@@ -2,9 +2,6 @@
 
 import Link from "next/link";
 import Navbar from "./navbar/page";
-import About from "./about/page";
-import Contact from "./contact/page";
-
 const FEATURED_PRODUCTS = [
   {
     id: 1,
@@ -165,9 +162,6 @@ export default function Home() {
             ))}
           </div>
         </section>
-
-        <About />
-        <Contact />
       </main>
 
       <footer className="footer">
