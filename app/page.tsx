@@ -68,30 +68,33 @@ export default function Home() {
     <div>
       <Navbar />
 
-      <main className="home-page">
-        <section id="home" className="hero">
-          <div className="hero-content">
-            <p className="hero-small-text">
-              WELCOME TO BEADIFYBYMANDY
-            </p>
+      <main>
+        <div className="hero-content">
+  <p className="hero-small-text">
+    WELCOME TO BEADIFYBYMANDY
+  </p>
 
-            <h1>
-              Beads Made
-              <br />
-              With Love.
-            </h1>
+  <h1>
+    Every Bead Tells
+    <br />
+    A Beautiful Story.
+  </h1>
 
-            <p className="hero-description">
-              BeadifyByMandy creates beautiful handmade bead accessories
-              designed to add a touch of elegance, colour and personality
-              to your everyday style.
-            </p>
+  <p className="hero-description">
+    Discover the beauty of handmade accessories, thoughtfully
+    crafted to celebrate your unique style. From elegant bracelets
+    and stunning necklaces to waist beads and anklets, every piece
+    is made with love, creativity, and attention to detail.
+  </p>
 
-            <Link href="/shop" className="hero-button">
-              Explore Our Collection
-            </Link>
-          </div>
-        </section>
+  <p className="hero-highlight">
+    Handmade with love. Designed for you. Made to shine.
+  </p>
+
+  <Link href="/shop" className="hero-button">
+    Explore Our Collection
+  </Link>
+</div>
 
         <section id="shop" className="featured-products">
           <div className="section-heading">
