@@ -6305,3 +6305,169 @@ button {
     transition-duration: 0.01ms !important;
   }
 }
+
+:root {
+  --visual-lift-shadow: 0 28px 65px rgba(65, 32, 88, 0.18);
+  --visual-glow: 0 0 0 1px rgba(255, 255, 255, 0.75), 0 18px 45px rgba(112, 70, 154, 0.16);
+}
+
+body {
+  background-color: #fcf9ff;
+}
+
+.about-hero,
+.collection-hero {
+  isolation: isolate;
+  background:
+    radial-gradient(ellipse at 15% 15%, rgba(255, 255, 255, 0.95), transparent 34%),
+    radial-gradient(ellipse at 85% 80%, rgba(166, 129, 194, 0.2), transparent 32%),
+    linear-gradient(135deg, #fbf7ff 0%, #f0e4fa 48%, #fffaff 100%);
+}
+
+.about-hero h1,
+.collection-hero h1,
+.cart-header h1,
+.checkout-header h1 {
+  background: linear-gradient(120deg, #39204f 5%, #70469a 52%, #a681c2 95%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.product-card,
+.collection-products .product-card {
+  transform: perspective(1100px) translateZ(0);
+  transform-style: preserve-3d;
+  border: 1px solid rgba(112, 70, 154, 0.13);
+  box-shadow: 0 12px 30px rgba(74, 43, 99, 0.08);
+  transition:
+    transform 420ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 420ms ease,
+    border-color 420ms ease;
+}
+
+.product-card:hover,
+.collection-products .product-card:hover {
+  transform: perspective(1100px) translateY(-12px) rotateX(2deg) rotateY(-1deg) translateZ(12px);
+  border-color: rgba(112, 70, 154, 0.3);
+  box-shadow: var(--visual-lift-shadow), var(--visual-glow);
+}
+
+.product-image,
+.product-img {
+  backface-visibility: hidden;
+}
+
+.product-card:hover .product-img {
+  transform: scale(1.09) translateZ(12px);
+}
+
+.value-card,
+.cart-item,
+.cart-summary,
+.checkout-section,
+.order-summary,
+.empty-cart {
+  box-shadow: 0 12px 32px rgba(74, 43, 99, 0.07);
+  transition:
+    transform 350ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 350ms ease,
+    border-color 350ms ease;
+}
+
+.value-card:hover,
+.cart-summary:hover,
+.checkout-section:hover,
+.order-summary:hover {
+  transform: translateY(-7px);
+  box-shadow: var(--visual-lift-shadow);
+}
+
+.about-image {
+  transform-style: preserve-3d;
+  box-shadow: 0 28px 65px rgba(91, 52, 119, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.75);
+}
+
+.about-image:hover {
+  transform: perspective(1000px) translateY(-8px) rotateY(-3deg) rotateX(2deg);
+}
+
+.about-button,
+.cart-button,
+.checkout-button,
+.place-order-button,
+.collection-cart-button,
+.product-add-button {
+  box-shadow: 0 10px 0 rgba(65, 32, 88, 0.12), 0 18px 35px rgba(112, 70, 154, 0.22);
+  transition:
+    transform 220ms ease,
+    box-shadow 220ms ease,
+    filter 220ms ease;
+}
+
+.about-button:hover,
+.cart-button:hover,
+.checkout-button:hover,
+.place-order-button:hover,
+.collection-cart-button:hover,
+.product-add-button:hover {
+  transform: translateY(-4px);
+  filter: saturate(1.08);
+  box-shadow: 0 5px 0 rgba(65, 32, 88, 0.1), 0 24px 42px rgba(112, 70, 154, 0.3);
+}
+
+.about-button:active,
+.cart-button:active,
+.checkout-button:active,
+.place-order-button:active,
+.collection-cart-button:active,
+.product-add-button:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 0 rgba(65, 32, 88, 0.1), 0 8px 16px rgba(112, 70, 154, 0.18);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: #8e63b5;
+  box-shadow: 0 0 0 4px rgba(142, 99, 181, 0.14);
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 3px solid rgba(142, 99, 181, 0.65);
+  outline-offset: 4px;
+}
+
+@media (max-width: 900px) {
+  .product-card:hover,
+  .collection-products .product-card:hover {
+    transform: translateY(-6px);
+  }
+
+  .about-image:hover {
+    transform: translateY(-4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-card,
+  .collection-products .product-card,
+  .value-card,
+  .cart-item,
+  .cart-summary,
+  .checkout-section,
+  .order-summary,
+  .empty-cart,
+  .about-image,
+  .about-button,
+  .cart-button,
+  .checkout-button,
+  .place-order-button,
+  .collection-cart-button,
+  .product-add-button {
+    transition: none !important;
+    transform: none !important;
+  }
+}
