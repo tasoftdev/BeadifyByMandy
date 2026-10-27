@@ -5929,3 +5929,400 @@
     font-size: 14px;
   }
 }
+
+/* =========================================================
+   PREMIUM VISUAL UPGRADE
+   Layered on top of the existing styles to preserve layouts.
+   Adds depth, glass-like surfaces, 3D hover effects and motion.
+   ========================================================= */
+
+:root {
+  --luxury-ink: #29202f;
+  --luxury-muted: #756a7c;
+  --luxury-purple: #70469a;
+  --luxury-purple-deep: #573276;
+  --luxury-lilac: #a681c2;
+  --luxury-glass: rgba(255, 255, 255, 0.72);
+  --luxury-border: rgba(112, 70, 154, 0.14);
+  --luxury-shadow: 0 22px 60px rgba(54, 29, 76, 0.12);
+  --luxury-shadow-hover: 0 30px 70px rgba(54, 29, 76, 0.2);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 90px;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: rgba(166, 129, 194, 0.28);
+  color: var(--luxury-ink);
+}
+
+a, button, input, textarea, select {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a {
+  transition: color 220ms ease;
+}
+
+button {
+  font: inherit;
+}
+
+/* Softer, richer backgrounds and ambient colour */
+.about-preview,
+.about-page,
+.cart-page,
+.checkout-page,
+.collection-page {
+  background-color: #fcf9ff;
+  background-image:
+    radial-gradient(ellipse at 8% 5%, rgba(166, 129, 194, 0.13), transparent 32%),
+    radial-gradient(ellipse at 94% 92%, rgba(112, 70, 154, 0.09), transparent 30%);
+}
+
+/* Ambient floating accents */
+.about-image::before,
+.about-hero::before,
+.collection-hero::before,
+.about-collection::before {
+  animation: luxury-orbit 18s linear infinite;
+  pointer-events: none;
+}
+
+.about-image::after,
+.about-hero::after,
+.collection-hero::after {
+  animation: luxury-twinkle 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* 3D image stage */
+.about-image {
+  isolation: isolate;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  box-shadow:
+    0 30px 70px rgba(91, 52, 119, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.65);
+}
+
+.about-placeholder {
+  transform: translateZ(35px);
+  background: linear-gradient(145deg, #8e63b5 0%, #70469a 52%, #4e2b70 100%);
+  box-shadow:
+    0 26px 40px rgba(72, 37, 99, 0.28),
+    inset 8px 8px 18px rgba(255, 255, 255, 0.18),
+    inset -8px -10px 18px rgba(43, 20, 61, 0.2),
+    0 0 0 12px rgba(255, 255, 255, 0.62);
+  animation: luxury-float 6s ease-in-out infinite;
+}
+
+/* Headings get a little more editorial polish */
+.section-title,
+.about-hero h1,
+.about-story-content h2,
+.about-values h2,
+.about-collection h2,
+.cart-header h1,
+.checkout-header h1,
+.collection-hero h1 {
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.section-description,
+.about-hero > p:last-child,
+.about-story-content p:not(.section-label),
+.about-collection > p:not(.section-label) {
+  text-wrap: pretty;
+}
+
+/* Glassy panels with deeper dimensional shadows */
+.value-card,
+.cart-item,
+.cart-summary,
+.checkout-section,
+.order-summary,
+.empty-cart,
+.collection-products .product-card {
+  border-color: var(--luxury-border);
+  box-shadow:
+    0 8px 24px rgba(74, 43, 99, 0.055),
+    0 1px 0 rgba(255, 255, 255, 0.9) inset;
+  transition:
+    transform 360ms cubic-bezier(0.2, 0.75, 0.25, 1),
+    box-shadow 360ms ease,
+    border-color 260ms ease,
+    background-color 260ms ease;
+}
+
+.cart-summary,
+.order-summary {
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(250, 245, 255, 0.92));
+  backdrop-filter: blur(16px);
+}
+
+.value-card {
+  transform-style: preserve-3d;
+  perspective: 900px;
+}
+
+.value-card h3,
+.value-card p {
+  position: relative;
+  z-index: 1;
+}
+
+.value-card h3 {
+  transition: transform 300ms ease, color 300ms ease;
+}
+
+.value-card:hover {
+  transform: translateY(-10px) rotateX(2deg) rotateY(-2deg);
+  box-shadow: var(--luxury-shadow-hover);
+  border-color: rgba(112, 70, 154, 0.28);
+}
+
+.value-card:hover h3 {
+  transform: translateZ(14px);
+  color: var(--luxury-purple-deep);
+}
+
+/* Product cards: raised 3D feel without changing product structure */
+.collection-products .product-card {
+  transform: translateZ(0);
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.collection-products .product-image {
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.collection-products .product-image img {
+  transition: transform 650ms cubic-bezier(0.2, 0.75, 0.25, 1), filter 450ms ease;
+  will-change: transform;
+}
+
+.collection-products .product-card:hover {
+  transform: translateY(-10px) rotateX(1deg);
+  box-shadow: var(--luxury-shadow-hover);
+}
+
+.collection-products .product-card:hover .product-image img {
+  transform: scale(1.075) rotate(0.6deg);
+  filter: saturate(1.06) contrast(1.02);
+}
+
+/* Cart rows feel like tactile cards */
+.cart-item {
+  transform-style: preserve-3d;
+}
+
+.cart-item:hover {
+  transform: translateY(-5px) scale(1.006);
+  box-shadow: 0 22px 48px rgba(74, 43, 99, 0.13);
+}
+
+.cart-item-image img {
+  will-change: transform;
+}
+
+.cart-item:hover .cart-item-image img {
+  transform: scale(1.07) translateZ(12px);
+}
+
+/* Buttons with a glossy, dimensional finish */
+.about-button,
+.cart-button,
+.checkout-button,
+.place-order-button,
+.collection-cart-button,
+.whatsapp-button,
+.checkout-success-button {
+  isolation: isolate;
+  transform: translateY(0);
+  box-shadow:
+    0 9px 0 rgba(61, 31, 83, 0.13),
+    0 15px 28px rgba(112, 70, 154, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  transition:
+    transform 220ms ease,
+    box-shadow 220ms ease,
+    filter 220ms ease;
+}
+
+.about-button:hover,
+.cart-button:hover,
+.checkout-button:hover,
+.place-order-button:hover,
+.collection-cart-button:hover,
+.whatsapp-button:hover,
+.checkout-success-button:hover {
+  filter: brightness(1.04);
+  box-shadow:
+    0 5px 0 rgba(61, 31, 83, 0.12),
+    0 20px 38px rgba(112, 70, 154, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28);
+}
+
+.about-button:active,
+.cart-button:active,
+.checkout-button:active,
+.place-order-button:active,
+.collection-cart-button:active,
+.whatsapp-button:active,
+.checkout-success-button:active {
+  transform: translateY(3px) scale(0.99);
+  box-shadow:
+    0 2px 0 rgba(61, 31, 83, 0.12),
+    0 7px 14px rgba(112, 70, 154, 0.16);
+}
+
+/* Cleaner, more visible keyboard navigation */
+:where(a, button, input, textarea, select, [tabindex]):focus-visible {
+  outline: 3px solid rgba(112, 70, 154, 0.42);
+  outline-offset: 4px;
+}
+
+/* Form fields feel responsive and modern */
+.checkout-field input,
+.checkout-field textarea,
+.checkout-field select {
+  border-radius: 13px;
+  box-shadow: 0 2px 7px rgba(54, 29, 76, 0.025);
+  transition:
+    border-color 220ms ease,
+    box-shadow 220ms ease,
+    background 220ms ease,
+    transform 220ms ease;
+}
+
+.checkout-field input:focus,
+.checkout-field textarea:focus,
+.checkout-field select:focus {
+  transform: translateY(-1px);
+  box-shadow:
+    0 0 0 4px rgba(112, 70, 154, 0.1),
+    0 8px 20px rgba(54, 29, 76, 0.06);
+}
+
+/* Quantity controls */
+.quantity-controls {
+  box-shadow: 0 3px 9px rgba(54, 29, 76, 0.045);
+}
+
+.quantity-controls button:hover {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+}
+
+/* Scrollbar styling where supported */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #b59acb #f4eef9;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #f4eef9;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #b59acb, #70469a);
+  border: 2px solid #f4eef9;
+  border-radius: 999px;
+}
+
+/* Gentle page entrance for major sections */
+.about-hero,
+.about-story,
+.about-values,
+.about-collection,
+.collection-hero,
+.collection-products,
+.cart-header,
+.checkout-header {
+  animation: luxury-enter 700ms cubic-bezier(0.2, 0.75, 0.25, 1) both;
+}
+
+@keyframes luxury-enter {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes luxury-float {
+  0%, 100% { transform: translateY(0) translateZ(35px); }
+  50% { transform: translateY(-9px) translateZ(35px); }
+}
+
+@keyframes luxury-orbit {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes luxury-twinkle {
+  0%, 100% { opacity: 0.55; transform: scale(0.96) rotate(-4deg); }
+  50% { opacity: 1; transform: scale(1.08) rotate(5deg); }
+}
+
+/* Responsive refinement */
+@media (max-width: 900px) {
+  .about-image,
+  .value-card,
+  .collection-products .product-card,
+  .cart-item {
+    transform-style: flat;
+  }
+
+  .value-card:hover,
+  .collection-products .product-card:hover {
+    transform: translateY(-5px);
+  }
+}
+
+@media (max-width: 600px) {
+  .about-placeholder {
+    animation-duration: 7s;
+  }
+
+  .about-button,
+  .cart-button,
+  .checkout-button,
+  .place-order-button,
+  .collection-cart-button {
+    min-height: 48px;
+  }
+
+  .cart-item:hover {
+    transform: translateY(-2px);
+  }
+}
+
+/* Respect users who prefer less motion */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
